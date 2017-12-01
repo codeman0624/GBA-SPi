@@ -13,10 +13,28 @@ sudo systemctl disable hciuart
 cd
 curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/retrogame.sh
 sudo bash retrogame.sh -2
-
 #move the proper config file for button setups
 mv SPi_retrogame.cfg /boot/retrogame.cfg  
+
+#Install I2S
+curl -sS https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh | bash
+
+
 #move config.txt?
-    
+mv SPi_config.txt /boot/config.txt
 #move rc.local
 mv SPi_rc.local /etc/rc.local
+
+
+#install SPI screen
+mv SPi_modules /etc/modules
+mv SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
+sudo apt-get install cmake
+git clone https://github.com/tasanakorn/rpi-fbcp
+cd rpi-fbcp/
+mkdir build
+cd build/
+cmake ..
+make
+sudo install fbcp /usr/local/bin/fbcp
+
