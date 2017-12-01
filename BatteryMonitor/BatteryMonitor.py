@@ -10,7 +10,7 @@ import ConfigParser
 
 config = ConfigParser.ConfigParser()
 config.read('/home/pi/BatteryMonitor/battery_monitor.config')				#read the contents of the config file
-configfile = open('/home/pi/BatteryMonitor/battery_monitor.config', 'w')	#open a file of the same name, for writing back to later
+#configfile = open('/home/pi/BatteryMonitor/battery_monitor.config', 'w')	#open a file of the same name, for writing back to later
 		  
 PNGVIEWPATH = "/home/pi/BatteryMonitor/Pngview/"
 ICONPATH = "/home/pi/BatteryMonitor/icons"
@@ -43,8 +43,8 @@ ser = serial.Serial(
 def cleanup(signalnum=None, handler=None):
 	ser.flushInput()  
 	ser.close()  #close the serial port
-	config.write(configfile)	#write the configurations back to the file
-	configfile.close()			#close the config file
+#	config.write(configfile)	#write the configurations back to the file
+#	configfile.close()			#close the config file
 	KillPNGView()
 	exit(0)
 
@@ -112,14 +112,14 @@ def KillPNGView():
 def	SetXOFFSET(offset_high, offset_low):
 	global XOFFSET
 	XOFFSET = (ord(offset_high)*256) + ord(offset_low)
-	config.set('offset_values', 'X', XOFFSET)	#update the config with the new value
+#	config.set('offset_values', 'X', XOFFSET)	#update the config with the new value
 	UpdateDisplay()
 #	print XOFFSET
 
 def	SetYOFFSET(offset_high, offset_low):
 	global YOFFSET
 	YOFFSET = (ord(offset_high)*256) + ord(offset_low)
-	config.set('offset_values', 'Y', YOFFSET)	#update the config with the new value
+#	config.set('offset_values', 'Y', YOFFSET)	#update the config with the new value
 	UpdateDisplay()
 	
 
