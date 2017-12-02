@@ -18,7 +18,7 @@ mv SPi_retrogame.cfg /boot/retrogame.cfg
 
 #Install I2S
 curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh
-sudo bash i2samp.sh
+sudo bash i2samp.sh -y <<< $'N\n'
 
 
 #move config.txt?
