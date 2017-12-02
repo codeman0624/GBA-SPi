@@ -12,12 +12,13 @@ sudo systemctl disable hciuart
 
 cd
 curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/retrogame.sh
-sudo bash retrogame.sh < echo '3'
+echo '3' | sudo bash retrogame.sh
 #move the proper config file for button setups
 mv SPi_retrogame.cfg /boot/retrogame.cfg  
 
 #Install I2S
-curl -sS https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh | bash
+curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh
+sudo bash i2samp.sh
 
 
 #move config.txt?
