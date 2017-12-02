@@ -16,10 +16,6 @@ echo '3' | sudo bash retrogame.sh
 #move the proper config file for button setups
 mv SPi_retrogame.cfg /boot/retrogame.cfg  
 
-#Install I2S
-curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh
-sudo bash i2samp.sh -y <<< $'N\n'
-
 
 #move config.txt?
 mv SPi_config.txt /boot/config.txt
@@ -39,3 +35,7 @@ cmake ..
 make
 sudo install fbcp /usr/local/bin/fbcp
 
+
+#Install I2S
+curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh
+sudo bash i2samp.sh -y
