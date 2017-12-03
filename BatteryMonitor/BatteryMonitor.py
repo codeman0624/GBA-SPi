@@ -9,11 +9,11 @@ import ConfigParser
           
 
 config = ConfigParser.ConfigParser()
-config.read('/home/pi/BatteryMonitor/battery_monitor.config')				#read the contents of the config file
-#configfile = open('/home/pi/BatteryMonitor/battery_monitor.config', 'w')	#open a file of the same name, for writing back to later
+config.read('/home/pi/GBA-SPi/BatteryMonitor/battery_monitor.config')				#read the contents of the config file
+#configfile = open('/home/pi/GBA-SPi/BatteryMonitor/battery_monitor.config', 'w')	#open a file of the same name, for writing back to later
 		  
-PNGVIEWPATH = "/home/pi/BatteryMonitor/Pngview/"
-ICONPATH = "/home/pi/BatteryMonitor/icons"
+PNGVIEWPATH = "/home/pi/GBA-SPi/BatteryMonitor/Pngview/"
+ICONPATH = "/home/pi/GBA-SPi/BatteryMonitor/icons"
 XOFFSET = config.get('offset_values', 'X')
 YOFFSET = config.get('offset_values', 'Y')
 CurrentPicture = "Current"
