@@ -26,17 +26,29 @@ cmake ..
 make
 sudo install fbcp /usr/local/bin/fbcp
 
+#Add necessary lines to the rc.local file
+sudo sed -i 's/exit 0/fbcp\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/exit 0/python /home/pi/BatteryMonitor/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/exit 0/python /home/pi/BatteryMonitor/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
+echo < "Modified /etc/rc.local"
+
+#check and modify config.txt
+
+echo < "Modified /boot/config.txt
+
 cd /home/pi/GBA-SPi/Setup
 #move the proper config file for button setups
 cp SPi_retrogame.cfg /boot/retrogame.cfg  
-#move config.txt
-cp SPi_config.txt /boot/config.txt
-#move rc.local
-cp SPi_rc.local /etc/rc.local
+echo < "Configured retrogame inputs"
+
+
 #move modules
 cp SPi_modules /etc/modules
+echo < "Configured /etc/modules"
+
 #move fbtft.conf
 cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
+echo < "Configured /etc/modprobe.d/fbtft.conf
 
 
 #Install I2S
