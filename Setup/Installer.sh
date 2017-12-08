@@ -27,9 +27,9 @@ make
 sudo install fbcp /usr/local/bin/fbcp
 
 #Add necessary lines to the rc.local file
-sudo sed -i 's/exit 0/fbcp\&\nexit 0/g' /etc/rc.local
-sudo sed -i 's/exit 0/python /home/pi/BatteryMonitor/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
-sudo sed -i 's/exit 0/python /home/pi/BatteryMonitor/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/^exit 0/fbcp\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/^exit 0/python \/home\/pi\/BatteryMonitor\/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/^exit 0/python \/home\/pi\/BatteryMonitor\/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
 echo "Modified /etc/rc.local"
 
 #check and modify config.txt
@@ -43,11 +43,11 @@ if ! grep '^disable_overscan=0' $config_txt; then
 echo 'disable_overscan=0' >> $config_txt
 fi
 
-echo "overscan_scale=1\n" >> $config_txt
-echo "enable_uart=1\n" >> $config_txt
-echo "dtoverlay=pi3-disable-bt\n" >> $config_txt
-echo "dtoverlay=hifiberry-dac\n" >> $config_txt
-echo "core_freq=300\n" >> $config_txt
+echo "overscan_scale=1" >> $config_txt
+echo "enable_uart=1" >> $config_txt
+echo "dtoverlay=pi3-disable-bt" >> $config_txt
+echo "dtoverlay=hifiberry-dac" >> $config_txt
+echo "core_freq=300" >> $config_txt
 echo "Modified /boot/config.txt"
 
 cd /home/pi/GBA-SPi/Setup
