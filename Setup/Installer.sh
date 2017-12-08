@@ -30,25 +30,39 @@ sudo install fbcp /usr/local/bin/fbcp
 sudo sed -i 's/exit 0/fbcp\&\nexit 0/g' /etc/rc.local
 sudo sed -i 's/exit 0/python /home/pi/BatteryMonitor/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
 sudo sed -i 's/exit 0/python /home/pi/BatteryMonitor/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
-echo < "Modified /etc/rc.local"
+echo "Modified /etc/rc.local"
 
 #check and modify config.txt
+config_txt=/boot/config.txt
+echo "Modifying /boot/config.txt..."
+if ! grep '^dtparam=spi=on' $config_txt; then
+echo 'dtparam=spi=on' >> $config_txt
+fi
 
-echo < "Modified /boot/config.txt
+if ! grep '^disable_overscan=0' $config_txt; then
+echo 'disable_overscan=0' >> $config_txt
+fi
+
+echo "overscan_scale=1\n" >> $config_txt
+echo "enable_uart=1\n" >> $config_txt
+echo "dtoverlay=pi3-disable-bt\n" >> $config_txt
+echo "dtoverlay=hifiberry-dac\n" >> $config_txt
+echo "core_freq=300\n" >> $config_txt
+echo "Modified /boot/config.txt
 
 cd /home/pi/GBA-SPi/Setup
 #move the proper config file for button setups
 cp SPi_retrogame.cfg /boot/retrogame.cfg  
-echo < "Configured retrogame inputs"
+echo "Configured retrogame inputs"
 
 
 #move modules
 cp SPi_modules /etc/modules
-echo < "Configured /etc/modules"
+echo "Configured /etc/modules"
 
 #move fbtft.conf
 cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
-echo < "Configured /etc/modprobe.d/fbtft.conf
+echo "Configured /etc/modprobe.d/fbtft.conf
 
 
 #Install I2S
