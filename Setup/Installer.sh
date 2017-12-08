@@ -28,8 +28,8 @@ sudo install fbcp /usr/local/bin/fbcp
 
 #Add necessary lines to the rc.local file
 sudo sed -i 's/^exit 0/fbcp\&\nexit 0/g' /etc/rc.local
-sudo sed -i 's/^exit 0/python \/home\/pi\/BatteryMonitor\/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
-sudo sed -i 's/^exit 0/python \/home\/pi\/BatteryMonitor\/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/^exit 0/python \/home\/pi\/GBA-SPi\/BatteryMonitor\/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
+sudo sed -i 's/^exit 0/python \/home\/pi\/GBA-SPi\/BatteryMonitor\/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
 echo "Modified /etc/rc.local"
 
 #check and modify config.txt
