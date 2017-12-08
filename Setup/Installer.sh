@@ -62,7 +62,7 @@ echo "Configured /etc/modules"
 
 #move fbtft.conf
 cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
-echo "Configured /etc/modprobe.d/fbtft.conf
+echo "Configured /etc/modprobe.d/fbtft.conf"
 
 
 #Install I2S
