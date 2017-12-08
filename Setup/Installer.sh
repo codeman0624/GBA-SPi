@@ -14,9 +14,9 @@ cd
 curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/retrogame.sh
 echo '3' | sudo bash retrogame.sh -y
 
+cd /home/pi/GBA-SPi/Setup
 #install SPI screen
-mv SPi_modules /etc/modules
-mv SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
+echo "Installing SPI screen..."
 sudo apt-get install cmake
 git clone https://github.com/tasanakorn/rpi-fbcp
 cd rpi-fbcp/
@@ -25,8 +25,11 @@ cd build/
 cmake ..
 make
 sudo install fbcp /usr/local/bin/fbcp
+cp SPi_modules /etc/modules
+cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
 
 #Add necessary lines to the rc.local file
+echo "Modifying /etc/rc.local"
 sudo sed -i 's/^exit 0/fbcp\&\nexit 0/g' /etc/rc.local
 sudo sed -i 's/^exit 0/python \/home\/pi\/GBA-SPi\/BatteryMonitor\/BatteryMonitor.py\&\nexit 0/g' /etc/rc.local
 sudo sed -i 's/^exit 0/python \/home\/pi\/GBA-SPi\/BatteryMonitor\/shutdown_pi.py\&\nexit 0/g' /etc/rc.local
