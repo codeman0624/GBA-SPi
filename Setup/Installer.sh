@@ -27,6 +27,7 @@ make
 sudo install fbcp /usr/local/bin/fbcp
 cp SPi_modules /etc/modules
 cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
+echo "SPI screen installed"
 
 #Add necessary lines to the rc.local file
 echo "Modifying /etc/rc.local"
