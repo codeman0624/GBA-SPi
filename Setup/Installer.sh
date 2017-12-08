@@ -48,7 +48,7 @@ echo "enable_uart=1\n" >> $config_txt
 echo "dtoverlay=pi3-disable-bt\n" >> $config_txt
 echo "dtoverlay=hifiberry-dac\n" >> $config_txt
 echo "core_freq=300\n" >> $config_txt
-echo "Modified /boot/config.txt
+echo "Modified /boot/config.txt"
 
 cd /home/pi/GBA-SPi/Setup
 #move the proper config file for button setups
