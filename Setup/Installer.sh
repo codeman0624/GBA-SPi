@@ -12,7 +12,7 @@ sudo systemctl disable hciuart
 
 cd
 curl -O https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/retrogame.sh
-echo '3' | sudo bash retrogame.sh
+echo '3' | sudo bash retrogame.sh -y
 
 #install SPI screen
 mv SPi_modules /etc/modules
