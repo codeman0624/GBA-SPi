@@ -59,6 +59,8 @@ cd /home/pi/GBA-SPi/Setup
 cp SPi_retrogame.cfg /boot/retrogame.cfg  
 echo "Configured retrogame inputs"
 
+#move cmdline.txt for proper serial port configuration
+cp SPI_cmdline.txt /boot/cmdline.txt
 
 #move modules
 cp SPi_modules /etc/modules
