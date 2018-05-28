@@ -26,8 +26,9 @@ cd build/
 cmake ..
 make
 sudo install fbcp /usr/local/bin/fbcp
-cp SPi_modules /etc/modules
-cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
+cd /home/pi/GBA-SPi/Setup
+sudo cp SPi_modules /etc/modules
+sudo cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
 echo "SPI screen installed"
 
 #Add necessary lines to the rc.local file
@@ -57,18 +58,18 @@ echo "Modified /boot/config.txt"
 
 cd /home/pi/GBA-SPi/Setup
 #move the proper config file for button setups
-cp SPi_retrogame.cfg /boot/retrogame.cfg  
+sudo cp SPi_retrogame.cfg /boot/retrogame.cfg  
 echo "Configured retrogame inputs"
 
 #move cmdline.txt for proper serial port configuration
-cp SPi_cmdline.txt /boot/cmdline.txt
+sudo cp SPi_cmdline.txt /boot/cmdline.txt
 
 #move modules
-cp SPi_modules /etc/modules
+sudo cp SPi_modules /etc/modules
 echo "Configured /etc/modules"
 
 #move fbtft.conf
-cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
+sudo cp SPi_fbtft.conf /etc/modprobe.d/fbtft.conf
 echo "Configured /etc/modprobe.d/fbtft.conf"
 
 
