@@ -62,7 +62,9 @@ sudo cp SPi_retrogame.cfg /boot/retrogame.cfg
 echo "Configured retrogame inputs"
 
 #move cmdline.txt for proper serial port configuration
-sudo cp SPi_cmdline.txt /boot/cmdline.txt
+#need to make sure to disable the console from raspi-config!
+#  this copying of cmdline.txt isn't working in Raspbian Stretch
+#sudo cp SPi_cmdline.txt /boot/cmdline.txt
 
 #move modules
 sudo cp SPi_modules /etc/modules
