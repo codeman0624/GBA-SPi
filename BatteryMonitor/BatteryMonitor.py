@@ -22,9 +22,13 @@ DISPLAY = "OFF"
 
 #put these up here in case the thresholds want to be changed
 BATTERYLOW = 10
+BATTERY12 = 12
 BATTERY25 = 25
+BATTERY37 = 37
 BATTERY50 = 50
+BATTERY62 = 62
 BATTERY75 = 75
+BATTERY87 = 87
 BATTERY100 = 100
 BATTERYCHARGING = 101
 
@@ -60,12 +64,20 @@ def SetIcon(charge):
 		NewPiture = "LowCharge"
 	elif ord(charge) <= BATTERYLOW:
 		NewPicture = "LowCharge"	#names of the battery picture files
+	elif ord(charge) <= BATTERY12:
+		NewPicture = "charge12p5"
 	elif ord(charge) <= BATTERY25:
 		NewPicture = "charge25"
+	elif ord(charge) <= BATTERY37:
+		NewPicture = "charge37p5"
 	elif ord(charge) <= BATTERY50:
 		NewPicture = "charge50"
+	elif ord(charge) <= BATTERY62:
+		NewPicture = "charge62p5"
 	elif ord(charge) <= BATTERY75:
 		NewPicture = "charge75"
+	elif ord(charge) <= BATTERY87:
+		NewPicture = "charge87p5"
 	elif ord(charge) <= BATTERY100:
 		NewPicture = "charge100"
 	else:
