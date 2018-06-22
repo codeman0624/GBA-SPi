@@ -53,7 +53,7 @@ def cleanup(signalnum=None, handler=None):
   GPIO.remove_event_detect(Y_BCM)
   GPIO.remove_event_detect(L_BCM)
   GPIO.remove_event_detect(R_BCM)
-	exit(0)
+  exit(0)
 
 #define the function to be called on termination signals 
 signal.signal(signal.SIGTERM, cleanup)
@@ -64,8 +64,19 @@ def Button_Monitor(channel):
     print Button_lookup.get(channel, "Invalid button")
 
 
+GPIO.setup(UP_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(DOWN_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(LEFT_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(RIGHT_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(START_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(SELECT_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(A_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(B_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(X_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(Y_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(L_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(R_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-# Add our function to execute when the button pressed event happens
 GPIO.add_event_detect(UP_BCM, GPIO.FALLING, callback = Button_Monitor, bouncetime = 200)
 GPIO.add_event_detect(DOWN_BCM, GPIO.FALLING, callback = Button_Monitor, bouncetime = 200)
 GPIO.add_event_detect(LEFT_BCM, GPIO.FALLING, callback = Button_Monitor, bouncetime = 200)
