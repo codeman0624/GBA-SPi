@@ -29,6 +29,7 @@ Button_lookup = {
   16: "Left",
   17: "L",
   22: "Start",
+  23: "Y",
   26: "Up",
   27: "Select"
   }
