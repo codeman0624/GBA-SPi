@@ -149,7 +149,7 @@ def	SetYOFFSET(offset_high, offset_low):
 	
 	
 def SendButtonValue(channel):
-	ser.write(channel)
+	ser.write(str(channel).encode())
 	
 	
 def ButtonMonitor():
