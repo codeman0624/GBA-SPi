@@ -20,11 +20,28 @@ CurrentPicture = "Current"
 NewPicture = "New"
 DISPLAY = "OFF"
 
+UP_BCM = 26
+DOWN_BCM = 13
+LEFT_BCM = 16
+RIGHT_BCM = 12
+START_BCM = 22
+SELECT_BCM = 27
+A_BCM = 6
+B_BCM = 5
+X_BCM = 7
+Y_BCM = 23
+L_BCM = 17
+R_BCM = 4
+
 #put these up here in case the thresholds want to be changed
 BATTERYLOW = 10
+BATTERY12 = 12
 BATTERY25 = 25
+BATTERY37 = 37
 BATTERY50 = 50
+BATTERY62 = 62
 BATTERY75 = 75
+BATTERY87 = 87
 BATTERY100 = 100
 BATTERYCHARGING = 101
 
@@ -60,12 +77,20 @@ def SetIcon(charge):
 		NewPiture = "LowCharge"
 	elif ord(charge) <= BATTERYLOW:
 		NewPicture = "LowCharge"	#names of the battery picture files
+	elif ord(charge) <= BATTERY12:
+		NewPicture = "charge12p5"
 	elif ord(charge) <= BATTERY25:
 		NewPicture = "charge25"
+	elif ord(charge) <= BATTERY37:
+		NewPicture = "charge37p5"
 	elif ord(charge) <= BATTERY50:
 		NewPicture = "charge50"
+	elif ord(charge) <= BATTERY62:
+		NewPicture = "charge62p5"
 	elif ord(charge) <= BATTERY75:
 		NewPicture = "charge75"
+	elif ord(charge) <= BATTERY87:
+		NewPicture = "charge87p5"
 	elif ord(charge) <= BATTERY100:
 		NewPicture = "charge100"
 	else:
@@ -122,7 +147,42 @@ def	SetYOFFSET(offset_high, offset_low):
 #	config.set('offset_values', 'Y', YOFFSET)	#update the config with the new value
 	UpdateDisplay()
 	
+	
+def SendButtonValue(channel):
+	ser.write(str(channel).encode())
+	
+	
+def ButtonMonitor():
+	GPIO.setup(UP_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(DOWN_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(LEFT_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(RIGHT_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(START_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(SELECT_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(A_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(B_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(X_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(Y_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(L_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(R_BCM, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+	GPIO.add_event_detect(UP_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(DOWN_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(LEFT_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(RIGHT_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(START_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(SELECT_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(A_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(B_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(X_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(Y_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(L_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	GPIO.add_event_detect(R_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
+	
+	while (ser.read() != 'Q')
+		time.sleep(0.05)
+	
+	
 
 
 ser.flushInput()	#flush the input of everything
@@ -169,5 +229,8 @@ while 1:
 	#'E' for echo, to check if the Pi is alive
 	elif commands[0] == 'E':	
 		ser.write('e')
+	#'B' for button monitor, used for board testing only!
+	elif commands[0] == 'B':	
+		ButtonMonitor()
 #	else:
 		#do nothing in the else case, that means the read timed out because nothing was sent
