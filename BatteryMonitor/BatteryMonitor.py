@@ -16,6 +16,7 @@ PNGVIEWPATH = "/home/pi/GBA-SPi/BatteryMonitor/Pngview/"
 ICONPATH = "/home/pi/GBA-SPi/BatteryMonitor/icons"
 XOFFSET = config.get('offset_values', 'X')
 YOFFSET = config.get('offset_values', 'Y')
+STYLE = config.get('battery_style', 'Style')
 CurrentPicture = "Current"
 NewPicture = "New"
 DISPLAY = "OFF"
@@ -110,7 +111,7 @@ def UpdateDisplay():
 	KillPNGView() #kill them all to remove the battery indicator, causes the icon to flash but i dont' care
 				  #  maybe eventually change this to add the new battery icon, then kill just the old ones?
 				  #Not sure I care enough about the icon flashing
-	os.system(PNGVIEWPATH + "/pngview -b 0 -l 99999 -x " + str(XOFFSET) + " -y " + str(YOFFSET) + " " + ICONPATH + "/" + NewPicture + ".png &")
+	os.system(PNGVIEWPATH + "/pngview -b 0 -l 99999 -x " + str(XOFFSET) + " -y " + str(YOFFSET) + " " + ICONPATH + "/" + "Style" + STYLE + "/" + NewPicture + ".png &")
 		
 	
 def SetDisplay(ON_OFF):
