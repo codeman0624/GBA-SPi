@@ -180,7 +180,7 @@ def ButtonMonitor():
 	GPIO.add_event_detect(L_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
 	GPIO.add_event_detect(R_BCM, GPIO.FALLING, callback = SendButtonValue, bouncetime = 200)
 	
-	while (ser.read() != 'Q')
+	while (ser.read() != 'Q'):
 		time.sleep(0.05)
 	
 	
