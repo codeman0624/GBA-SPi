@@ -20,6 +20,9 @@ STYLE = config.get('battery_style', 'Style')
 CurrentPicture = "Current"
 NewPicture = "New"
 DISPLAY = "OFF"
+BRIGHTNESSXOFFSET = 100
+BRIGHTNESSYOFFSET = 180
+BrightnessPicture = ""
 
 UP_BCM = 26
 DOWN_BCM = 13
@@ -124,8 +127,37 @@ def SetDisplay(ON_OFF):
 		DISPLAY = "ON"
 		UpdateDisplay()
 	
-
+def BrightnessUpdate(brightness_high, brightness_low):
+	global DISPLAY
+	#If the battery display is on, then turn it off for brightness adjustment
+	if DISPLAY == "ON":
+		SetDisplay(0)
 	
+	BrightnessValue = (brightness_high * 256) + brightness_low
+	
+	#Uncomment and use this when I have all the brightness pictures available
+	#BrightnessPicture = "percent" + str(myround(BrightnessValue))
+	
+	#for now just use this hardcoded value:
+	BrightnessPicture = "percent" + str(95)
+	
+	#First set the new brightness on screen icon, then kill any other pngview processes
+	#  This should give a smooth update without things flashing?
+	i = 0
+        killid = 0
+        os.system(PNGVIEWPATH + "/pngview -b 0 -l 99999 -x " + str(BRIGHTNESSXOFFSET) + " -y " + str(BRIGHTNESSYOFFSET) + " " + ICONPATH + "/" + "Brightness" + "/" + BrightnessPicture + ".png &")
+        out = check_output("ps aux | grep pngview | awk '{ print $2 }'", shell=True)
+        nums = out.split('\n')
+        for num in nums:
+            i += 1
+            if i == 1:
+                killid = num
+		os.system("sudo kill " + killid)
+
+		
+def myround(x, base=5):
+    return int(base * round(float(x)/base))
+
 	
 def KillPNGView():
 	#print("killed all")
@@ -230,6 +262,9 @@ while 1:
 	#'E' for echo, to check if the Pi is alive
 	elif commands[0] == 'E':	
 		ser.write('e')
+	#'V' for visualizing the brightness on screen
+	elif commands[0] == 'V':	
+		BrightnessUpdate(commands[1], commands[2])
 	#'B' for button monitor, used for board testing only!
 	elif commands[0] == 'B':	
 		ButtonMonitor()
