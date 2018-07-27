@@ -159,7 +159,9 @@ def BrightnessUpdate(brightness_high, brightness_low):
 
 		
 def myround(x, base=5):
-    return int(base * round(float(x)/base))
+	round = int(base * round(float(x)/base))
+	print("rounded = " + str(round))
+	return round
 
 	
 def KillPNGView():
@@ -240,7 +242,7 @@ while 1:
 	commands.append(ser.read())		#need to just keep appending to the array
 	
 	while commands[i] != 'Q':
-#		print commands		#here for debug
+		print commands		#here for debug
 		commands.append(ser.read())	
 		i+=1		#because i++ doesn't exist...?! dumb
 
