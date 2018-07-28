@@ -57,7 +57,7 @@ ser = serial.Serial(
 	parity=serial.PARITY_NONE,
 	stopbits=serial.STOPBITS_ONE,
 	bytesize=serial.EIGHTBITS,
-#	timeout=1							#timeout every second, so other things can be serviced if necessary
+	timeout=None
 )
 
 #clean up the serial port, configuration file, and PNGview process when exiting
@@ -223,9 +223,10 @@ def ButtonMonitor():
 	
 
 
-ser.flushInput()	#flush the input of everything
-while (ser.read() != 'E'):  #wait here for the echo, use this to sync with the microcontroller 
-	pass
+#ser.flushInput()	#flush the input of everything
+ser.reset_input_buffer()
+#while (ser.read() != 'E'):  #wait here for the echo, use this to sync with the microcontroller 
+#	pass
 	
 #Run this forever basically
 
@@ -239,13 +240,18 @@ while 1:
 	
 	#need to do an initial serial read, then keep checking if the
 	#  read value is 'Q', for Quit.  Otherwise keep reading.  'Q' ends the command array
+	"""
 	commands.append(ser.read())		#need to just keep appending to the array
 	
 	while commands[i] != 'Q':
 		print commands		#here for debug
 		commands.append(ser.read())	
 		i+=1		#because i++ doesn't exist...?! dumb
-
+	"""
+	
+	#Hopefully just read until a Q is found, which will come from the microcontroller
+	commands = ser.read_until('Q', 8)  #max of 8 bytes, shouldn't be bigger than that
+	print commands	#debug
 
 	#'S' for shutdown
 	if commands[0] == 'S':
@@ -254,9 +260,8 @@ while 1:
 	# greater than 100 means plugged in
 	elif commands[0] == 'I':
 		SetIcon(commands[1])	#sets the proper battery icon based off the number sent
-	#'D' for display setting, next value is 'Y' or 'N', followed by battery value
+	#'D' for display setting, next value is '1' or '0', followed by battery value
 	elif commands[0] == 'D':
-		#the command must be ['D', 'Y']
 		SetDisplay(commands[1])	#turns the battery display on or off
 	#'X' for setting the X offset, next value is pixel offset
 	elif commands[0] == 'X':
