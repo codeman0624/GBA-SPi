@@ -164,7 +164,7 @@ def BrightnessUpdate(brightness_high, brightness_low):
 		
 def myround(x, base=5):
 	round_out = int(base * round(float(x)/(base * 5)))
-	print("rounded = " + str(round_out))
+	#print("rounded = " + str(round_out))
 	return round_out
 
 	
