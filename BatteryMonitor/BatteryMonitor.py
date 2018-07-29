@@ -6,6 +6,7 @@ import serial
 import os
 import signal
 import ConfigParser
+from subprocess import check_output
           
 
 config = ConfigParser.ConfigParser()
@@ -131,11 +132,11 @@ def BrightnessUpdate(brightness_high, brightness_low):
 	global DISPLAY
 	#If the battery display is on, then turn it off for brightness adjustment
 	if DISPLAY == "ON":
-		SetDisplay(0)
+		SetDisplay('0')
 	
-	BrightnessValue = (brightness_high * 256) + brightness_low
+	BrightnessValue = (ord(brightness_high) * 256) + ord(brightness_low)
 	
-	if BrightnessValue > 500:
+	if BrightnessValue > 500 or BrightnessValue < 1:
 		KillPNGView()
 	else:
 		#Uncomment and use this when I have all the brightness pictures available
@@ -151,17 +152,20 @@ def BrightnessUpdate(brightness_high, brightness_low):
 		os.system(PNGVIEWPATH + "/pngview -b 0 -l 99999 -x " + str(BRIGHTNESSXOFFSET) + " -y " + str(BRIGHTNESSYOFFSET) + " " + ICONPATH + "/" + "Brightness" + "/" + BrightnessPicture + ".png &")
 		out = check_output("ps aux | grep pngview | awk '{ print $2 }'", shell=True)
 		nums = out.split('\n')
-		for num in nums:
-		    i += 1
-		    if i == 1:
-			killid = num
-			os.system("sudo kill " + killid)
+		#more than 4 means that there's already a brightness picture on screen, otherwise it is the first instance of this call, so don't kill anything
+		if len(nums) > 4:
+			os.system("sudo kill " + nums[0])	#kill the previous instance of PNGVIEW
+		#for num in nums:
+		#    i += 1
+		#    if i == 1:
+		#    killid = num
+		#	os.system("sudo kill " + killid)
 
 		
 def myround(x, base=5):
-	round = int(base * round(float(x)/base))
-	print("rounded = " + str(round))
-	return round
+	round_out = int(base * round(float(x)/(base * 5)))
+	print("rounded = " + str(round_out))
+	return round_out
 
 	
 def KillPNGView():
