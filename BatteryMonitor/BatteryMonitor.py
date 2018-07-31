@@ -6,6 +6,7 @@ import serial
 import os
 import signal
 import ConfigParser
+from subprocess import check_output
           
 
 config = ConfigParser.ConfigParser()
@@ -20,6 +21,9 @@ STYLE = config.get('battery_style', 'Style')
 CurrentPicture = "Current"
 NewPicture = "New"
 DISPLAY = "OFF"
+BRIGHTNESSXOFFSET = 100
+BRIGHTNESSYOFFSET = 180
+BrightnessPicture = ""
 
 UP_BCM = 26
 DOWN_BCM = 13
@@ -54,7 +58,7 @@ ser = serial.Serial(
 	parity=serial.PARITY_NONE,
 	stopbits=serial.STOPBITS_ONE,
 	bytesize=serial.EIGHTBITS,
-#	timeout=1							#timeout every second, so other things can be serviced if necessary
+	timeout=None
 )
 
 #clean up the serial port, configuration file, and PNGview process when exiting
@@ -124,8 +128,45 @@ def SetDisplay(ON_OFF):
 		DISPLAY = "ON"
 		UpdateDisplay()
 	
-
+def BrightnessUpdate(brightness_high, brightness_low):
+	global DISPLAY
+	#If the battery display is on, then turn it off for brightness adjustment
+	if DISPLAY == "ON":
+		SetDisplay('0')
 	
+	BrightnessValue = (ord(brightness_high) * 256) + ord(brightness_low)
+	
+	if BrightnessValue > 500 or BrightnessValue < 1:
+		KillPNGView()
+	else:
+		#Uncomment and use this when I have all the brightness pictures available
+		BrightnessPicture = "percent" + str(myround(BrightnessValue))
+
+		#for now just use this hardcoded value:
+		#BrightnessPicture = "percent" + str(95)
+
+		#First set the new brightness on screen icon, then kill any other pngview processes
+		#  This should give a smooth update without things flashing?
+		i = 0
+		killid = 0
+		os.system(PNGVIEWPATH + "/pngview -b 0 -l 99999 -x " + str(BRIGHTNESSXOFFSET) + " -y " + str(BRIGHTNESSYOFFSET) + " " + ICONPATH + "/" + "Brightness" + "/" + BrightnessPicture + ".png &")
+		out = check_output("ps aux | grep pngview | awk '{ print $2 }'", shell=True)
+		nums = out.split('\n')
+		#more than 4 means that there's already a brightness picture on screen, otherwise it is the first instance of this call, so don't kill anything
+		if len(nums) > 4:
+			os.system("sudo kill " + nums[0])	#kill the previous instance of PNGVIEW
+		#for num in nums:
+		#    i += 1
+		#    if i == 1:
+		#    killid = num
+		#	os.system("sudo kill " + killid)
+
+		
+def myround(x, base=5):
+	round_out = int(base * round(float(x)/(base * 5)))
+	#print("rounded = " + str(round_out))
+	return round_out
+
 	
 def KillPNGView():
 	#print("killed all")
@@ -186,9 +227,10 @@ def ButtonMonitor():
 	
 
 
-ser.flushInput()	#flush the input of everything
-while (ser.read() != 'E'):  #wait here for the echo, use this to sync with the microcontroller 
-	pass
+#ser.flushInput()	#flush the input of everything
+ser.reset_input_buffer()
+#while (ser.read() != 'E'):  #wait here for the echo, use this to sync with the microcontroller 
+#	pass
 	
 #Run this forever basically
 
@@ -202,13 +244,18 @@ while 1:
 	
 	#need to do an initial serial read, then keep checking if the
 	#  read value is 'Q', for Quit.  Otherwise keep reading.  'Q' ends the command array
+	"""
 	commands.append(ser.read())		#need to just keep appending to the array
 	
 	while commands[i] != 'Q':
-#		print commands		#here for debug
+		print commands		#here for debug
 		commands.append(ser.read())	
 		i+=1		#because i++ doesn't exist...?! dumb
-
+	"""
+	
+	#Hopefully just read until a Q is found, which will come from the microcontroller
+	commands = ser.read_until('Q', 8)  #max of 8 bytes, shouldn't be bigger than that
+	print commands	#debug
 
 	#'S' for shutdown
 	if commands[0] == 'S':
@@ -217,9 +264,8 @@ while 1:
 	# greater than 100 means plugged in
 	elif commands[0] == 'I':
 		SetIcon(commands[1])	#sets the proper battery icon based off the number sent
-	#'D' for display setting, next value is 'Y' or 'N', followed by battery value
+	#'D' for display setting, next value is '1' or '0', followed by battery value
 	elif commands[0] == 'D':
-		#the command must be ['D', 'Y']
 		SetDisplay(commands[1])	#turns the battery display on or off
 	#'X' for setting the X offset, next value is pixel offset
 	elif commands[0] == 'X':
@@ -230,6 +276,9 @@ while 1:
 	#'E' for echo, to check if the Pi is alive
 	elif commands[0] == 'E':	
 		ser.write('e')
+	#'V' for visualizing the brightness on screen
+	elif commands[0] == 'V':	
+		BrightnessUpdate(commands[1], commands[2])
 	#'B' for button monitor, used for board testing only!
 	elif commands[0] == 'B':	
 		ButtonMonitor()
