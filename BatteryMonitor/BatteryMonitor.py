@@ -164,7 +164,7 @@ def BrightnessUpdate(brightness_high, brightness_low):
 
 		
 def myround(x, base=5):
-	round_out = int(base * round(float(x)/(base * 5)))
+	round_out = int(base * round(float(x)/(base * 5)))   #base times 5 (so 25) because full range is 0-500, want to get range into 0-100
 	#print("rounded = " + str(round_out))
 	return round_out
 
