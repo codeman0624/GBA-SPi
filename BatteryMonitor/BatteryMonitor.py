@@ -21,8 +21,8 @@ STYLE = config.get('battery_style', 'Style')
 CurrentPicture = "Current"
 NewPicture = "New"
 DISPLAY = "OFF"
-BRIGHTNESSXOFFSET = 100
-BRIGHTNESSYOFFSET = 180
+BRIGHTNESSXOFFSET = config.get('brightness_location', 'X')
+BRIGHTNESSYOFFSET = config.get('brightness_location', 'Y')
 BrightnessPicture = ""
 
 UP_BCM = 26
