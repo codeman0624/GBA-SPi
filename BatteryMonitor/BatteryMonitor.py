@@ -129,18 +129,19 @@ def SetDisplay(ON_OFF):
 		UpdateDisplay()
 	
 def BrightnessUpdate(brightness_high, brightness_low):
+	"""
 	global DISPLAY
 	#If the battery display is on, then turn it off for brightness adjustment
 	if DISPLAY == "ON":
 		SetDisplay('0')
-	
+	"""
 	BrightnessValue = (ord(brightness_high) * 256) + ord(brightness_low)
 	
 	if BrightnessValue > 500 or BrightnessValue < 1:
 		KillPNGView()
 	else:
 		#Uncomment and use this when I have all the brightness pictures available
-		BrightnessPicture = "percent" + str(myround(BrightnessValue))
+		BrightnessPicture = "percent" + str(100 - myround(BrightnessValue))
 
 		#for now just use this hardcoded value:
 		#BrightnessPicture = "percent" + str(95)
