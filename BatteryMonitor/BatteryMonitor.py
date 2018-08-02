@@ -156,6 +156,7 @@ def BrightnessUpdate(brightness_high, brightness_low):
 		#more than 4 means that there's already a brightness picture on screen, otherwise it is the first instance of this call, so don't kill anything
 		if len(nums) > 4:
 			os.system("sudo kill " + nums[0])	#kill the previous instance of PNGVIEW
+		ser.reset_input_buffer()   #clear out any data received while servicing this routine
 		#for num in nums:
 		#    i += 1
 		#    if i == 1:
@@ -249,14 +250,14 @@ while 1:
 	commands.append(ser.read())		#need to just keep appending to the array
 	
 	while commands[i] != 'Q':
-		print commands		#here for debug
+		#print commands		#here for debug
 		commands.append(ser.read())	
 		i+=1		#because i++ doesn't exist...?! dumb
 	"""
 	
 	#Hopefully just read until a Q is found, which will come from the microcontroller
 	commands = ser.read_until('Q', 8)  #max of 8 bytes, shouldn't be bigger than that
-	print commands	#debug
+	#print commands	#debug
 
 	#'S' for shutdown
 	if commands[0] == 'S':
