@@ -19,6 +19,7 @@ GPIO.setup(20, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # Our function on what to do when the button is pressed
 def Shutdown(channel):
 	if SAVESTATE == 'Y':
+		pass
 		#do a save state thing here
 		#os.system("xdotool key "Shift_R+r"")
 	os.system("sudo shutdown -h now")
